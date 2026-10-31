@@ -1,5 +1,7 @@
 # Steam 游戏市场分析与相似游戏推荐
 
+项目代码仓库：[steam-game-analysis](https://github.com/qinmoshang654/steam-game-analysis)。
+
 数据来源：Nik Davis，Steam Store Games (Clean dataset)，Kaggle。
 https://www.kaggle.com/datasets/nikdavis/steam-store-games
 
@@ -12,7 +14,22 @@ https://nik-davis.github.io/posts/2019/steamspy-data-cleaning/
 
 ## 运行
 
-需要 Python 3.12 和 requirements.txt 中的库。下载 Kaggle 数据集，将 CSV 解压到 data/raw/；本地已经保留原始 ZIP 和 CSV。
+使用 Python 3.12，实验记录的版本为 Python 3.12.14。在仓库根目录打开终端，先安装依赖：
+
+```text
+python -m pip install -r requirements.txt
+```
+
+从上方 Kaggle 地址下载数据集，解压后将以下两个原始 CSV 文件放到仓库根目录下的 `data/raw/` 文件夹中，不需要其余数据文件：
+
+```text
+data/
+└── raw/
+    ├── steam.csv
+    └── steamspy_tag_data.csv
+```
+
+仓库提供源代码、依赖清单和运行说明；原始数据需自行下载，实验结果和模型由程序生成。准备数据后，按以下顺序运行基础实验、结果核验和推荐示例：
 
 ```text
 python run_analysis.py
@@ -33,9 +50,11 @@ python recommend.py --appid 620 --method FullTags
 
 完整标签相对仅类型方案的测试P@10差异为0.0214，查询级配对bootstrap区间跨零；验证集选择的CoreContent在测试集也未超过热门基线的P@10。保留这些负面结果，不以测试集最高值替换已选模型。游戏查询级重采样没有处理开发商内部相关性。
 
-results/ 中保留实验协议、清洗数据、划分、验证对比、逐游戏分群、每条推荐及隐藏标签、审计结果和模型。figures/ 中为实际实验生成的图。只在本地保存，不上传远程仓库。
+运行基础实验后，`results/` 中生成实验协议、清洗数据、划分、验证对比、逐游戏分群、每条推荐及隐藏标签、审计结果和模型，`figures/` 中生成实际实验图。无需预先下载这些输出目录。`refresh_figures.py` 可在基础实验完成后，利用已保存结果重新绘制基础实验的六张图。
 
 ## 机制解释与扩展实验
+
+先完成上面的基础实验，再按以下顺序运行扩展分析、扩展结果核验和新增方法的推荐示例：
 
 ```text
 python deepen_analysis.py
